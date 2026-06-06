@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>盛文皓 - 个人经历</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0f172a; --bg2: #1e293b; --card: #1e293b; --card-hover: #263348;
+  --border: rgba(148,163,184,0.1); --border-hover: rgba(56,189,248,0.3);
+  --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
+  --accent: #38bdf8; --accent2: #818cf8; --accent-dim: rgba(56,189,248,0.1);
+  --highlight: #67e8f9; --highlight2: #a5b4fc;
+  --award: #fbbf24; --inprogress: #fb923c;
+  --radius: 16px; --radius-sm: 10px;
+}
+/* ===== Life mode theme ===== */
+body.life-mode {
+  --bg: #faf8f5; --bg2: #f0ece6; --card: #ffffff; --card-hover: #f7f4ef;
+  --border: rgba(120,100,80,0.1); --border-hover: rgba(205,133,63,0.35);
+  --text: #3d3229; --text2: #6b5e52; --text3: #9c8e80;
+  --accent: #cd853f; --accent2: #d4764e; --accent-dim: rgba(205,133,63,0.08);
+  --highlight: #b8602a; --highlight2: #cd853f;
+  --award: #c07830; --inprogress: #d4764e;
+}
+body.life-mode::before {
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 10%, rgba(205,133,63,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 500px at 80% 80%, rgba(212,118,78,0.04) 0%, transparent 70%) !important;
+}
+body.life-mode .header::before {
+  background: radial-gradient(circle, rgba(205,133,63,0.08) 0%, transparent 70%) !important;
+}
+body.life-mode .header h1 {
+  background: linear-gradient(135deg, #cd853f 0%, #d4764e 50%, #b8602a 100%) !important;
+  -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;
+}
+body.life-mode .exp-period { color: #d4764e !important; background: rgba(212,118,78,0.08) !important; }
+body.life-mode .side-deco { border-color: var(--accent) !important; }
+body.life-mode .side-deco.left-bot { border-bottom-color: var(--accent) !important; }
+body.life-mode .side-deco.right-bot { background: var(--accent2) !important; }
+body.life-mode .dot-grid { background-image: radial-gradient(circle, var(--accent) 2px, transparent 2px) !important; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+body::before {
+  content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 10%, rgba(56,189,248,0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 500px at 80% 80%, rgba(129,140,248,0.03) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+  animation: bgShift 20s ease-in-out infinite alternate;
+  transition: background 0.5s ease;
+}
+@keyframes bgShift { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+.container { max-width: 860px; margin: 0 auto; padding: 60px 24px 80px; position: relative; z-index: 1; }
+
+/* ===== Mode Toggle ===== */
+.mode-toggle {
+  position: fixed; top: 24px; right: 24px; z-index: 100;
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 30px; padding: 6px 16px 6px 12px;
+  cursor: pointer; user-select: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.mode-toggle:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+.mode-toggle .toggle-icon { font-size: 1.1rem; transition: transform 0.4s ease; }
+.mode-toggle:hover .toggle-icon { transform: rotate(15deg); }
+.mode-toggle .toggle-label { font-size: 0.78rem; color: var(--text2); font-weight: 500; letter-spacing: 0.02em; }
+.mode-toggle .toggle-track {
+  width: 36px; height: 20px; border-radius: 10px;
+  background: var(--border); position: relative;
+  transition: background 0.3s;
+}
+.mode-toggle .toggle-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent); position: absolute; top: 2px; left: 2px;
+  transition: transform 0.3s ease, background 0.3s;
+}
+body.life-mode .mode-toggle .toggle-thumb { transform: translateX(16px); background: var(--accent); }
+body.life-mode .mode-toggle .toggle-track { background: rgba(205,133,63,0.2); }
+
+/* ===== Music Player ===== */
+.music-player {
+  position: fixed; top: 24px; right: 180px; z-index: 100;
+  display: none; /* temporarily hidden */
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 30px; padding: 6px 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  opacity: 0; pointer-events: none; transform: translateY(-8px);
+  transition: all 0.4s ease;
+}
+.music-player.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.music-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent-dim); border: 1px solid rgba(205,133,63,0.2);
+  color: var(--accent); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s; font-size: 0.85rem;
+}
+.music-btn:hover { background: rgba(205,133,63,0.15); transform: scale(1.08); }
+.music-btn.playing { background: var(--accent); color: #fff; }
+.music-btn.playing:hover { opacity: 0.9; }
+.music-info {
+  display: flex; flex-direction: column; gap: 1px;
+  max-width: 140px; overflow: hidden;
+}
+.music-title {
+  font-size: 0.72rem; color: var(--text); font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.music-artist {
+  font-size: 0.62rem; color: var(--text3); font-weight: 400;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.music-progress {
+  width: 100%; height: 3px; background: var(--border);
+  border-radius: 2px; margin-top: 4px; cursor: pointer;
+  position: relative; overflow: hidden;
+}
+.music-progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 2px; width: 0%; transition: width 0.3s linear;
+}
+/* Vinyl spin animation */
+.music-btn.playing .vinyl-icon { animation: spin 2s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+/* Sound wave bars */
+.sound-wave {
+  display: flex; align-items: flex-end; gap: 2px; height: 14px;
+}
+.sound-wave span {
+  width: 2px; background: var(--accent); border-radius: 1px;
+  animation: wave 0.8s ease-in-out infinite;
+}
+.sound-wave span:nth-child(1) { height: 4px; animation-delay: 0s; }
+.sound-wave span:nth-child(2) { height: 8px; animation-delay: 0.15s; }
+.sound-wave span:nth-child(3) { height: 6px; animation-delay: 0.3s; }
+.sound-wave span:nth-child(4) { height: 10px; animation-delay: 0.1s; }
+.sound-wave.paused span { animation-play-state: paused; }
+@keyframes wave {
+  0%, 100% { height: 3px; }
+  50% { height: 12px; }
+}
+
+/* ===== Page transition ===== */
+.page-content { transition: opacity 0.4s ease, transform 0.4s ease; }
+.page-content.switching { opacity: 0; transform: translateY(12px); }
+
+/* ===== Header ===== */
+.header { text-align: center; margin-bottom: 64px; position: relative; }
+.header::before {
+  content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(56,189,248,0.06) 0%, transparent 70%);
+  pointer-events: none; transition: background 0.5s;
+}
+.header h1 {
+  font-size: 2.8rem; font-weight: 800; letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 30%, #818cf8 70%, #a78bfa 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  transition: all 0.5s;
+}
+.header .role { font-size: 0.95rem; color: var(--text2); margin-top: 8px; font-weight: 400; letter-spacing: 0.02em; }
+.header .slogan { font-size: 0.92rem; color: var(--accent); margin-top: 16px; font-weight: 400; font-style: italic; opacity: 0.85; }
+.header .contact { font-size: 0.82rem; color: var(--text3); margin-top: 10px; }
+
+/* ===== Section ===== */
+.section { margin-bottom: 56px; }
+.section-title {
+  font-size: 0.82rem; font-weight: 600; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  margin-bottom: 24px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title::before {
+  content: ''; width: 3px; height: 16px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+}
+
+/* ===== About ===== */
+.about-text { color: var(--text2); font-size: 0.95rem; line-height: 2; font-weight: 300; }
+
+/* ===== Education ===== */
+.edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.edu-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 22px; transition: all 0.25s;
+}
+.edu-card:hover { border-color: var(--border-hover); background: var(--card-hover); }
+.edu-card .school { font-weight: 600; font-size: 1rem; }
+.edu-card .college { color: var(--text2); font-size: 0.85rem; margin-top: 4px; font-weight: 300; }
+.edu-card .degree {
+  display: inline-block; background: var(--accent-dim); color: var(--accent);
+  font-size: 0.72rem; padding: 2px 10px; border-radius: 20px; margin-top: 10px;
+  font-weight: 500; letter-spacing: 0.02em;
+}
+.edu-card .period { color: var(--text3); font-size: 0.78rem; margin-top: 6px; }
+.awards-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.award-tag {
+  background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.15);
+  color: var(--award); font-size: 0.78rem; padding: 5px 14px; border-radius: 20px; font-weight: 400;
+}
+
+/* ===== Experience Card ===== */
+.exp-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 28px 28px 24px; margin-bottom: 16px; transition: all 0.25s;
+  position: relative; overflow: hidden;
+}
+.exp-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0; transition: opacity 0.25s;
+}
+.exp-card:hover { border-color: var(--border-hover); background: var(--card-hover); }
+.exp-card:hover::before { opacity: 1; }
+.exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px; }
+.exp-company { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+.exp-role { color: var(--accent); font-size: 0.82rem; margin-top: 2px; font-weight: 400; }
+.exp-period {
+  color: #fb923c; font-size: 0.76rem; white-space: nowrap;
+  background: rgba(251,146,60,0.08); padding: 3px 10px; border-radius: 20px; font-weight: 400;
+}
+.project-tag {
+  display: inline-block; font-size: 0.72rem; padding: 3px 12px; border-radius: 20px;
+  margin-bottom: 10px; font-weight: 500;
+}
+.project-tag.award { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); color: var(--award); }
+.project-tag.inprogress {
+  background: rgba(251,146,60,0.08); border: 1px solid rgba(251,146,60,0.25); color: var(--inprogress);
+  animation: pulse-tag 2.5s ease-in-out infinite;
+}
+@keyframes pulse-tag { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+.exp-desc { color: var(--text2); font-size: 0.9rem; line-height: 1.9; margin: 10px 0 16px; font-weight: 300; }
+.exp-desc a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(56,189,248,0.3); transition: border-color 0.2s; }
+.exp-desc a:hover { border-color: var(--accent); }
+.exp-details { list-style: none; padding: 0; margin: 0 0 18px; }
+.exp-details li {
+  color: var(--text2); font-size: 0.87rem; padding: 5px 0 5px 18px;
+  position: relative; line-height: 1.85; font-weight: 300;
+}
+.exp-details li::before {
+  content: ''; position: absolute; left: 2px; top: 13px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2)); opacity: 0.7;
+}
+.hl { color: var(--highlight); font-weight: 500; }
+.tech-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.tech-tag {
+  background: rgba(129,140,248,0.06); border: 1px solid rgba(129,140,248,0.12);
+  color: var(--accent2); font-size: 0.7rem; padding: 2px 10px; border-radius: 20px;
+  font-weight: 400; transition: all 0.2s;
+}
+.tech-tag:hover { background: rgba(129,140,248,0.12); border-color: rgba(129,140,248,0.25); }
+
+/* ===== Skills - list ===== */
+.skills-list { list-style: none; padding: 0; }
+.skills-list li {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 14px 22px; margin-bottom: 8px; display: flex; align-items: flex-start;
+  gap: 20px; transition: all 0.25s;
+}
+.skills-list li:hover { border-color: var(--border-hover); background: var(--card-hover); }
+.skill-cat { font-weight: 500; color: var(--accent2); font-size: 0.82rem; min-width: 90px; flex-shrink: 0; padding-top: 1px; }
+.skill-items-inline { color: var(--text2); font-size: 0.84rem; line-height: 1.7; font-weight: 300; }
+.skill-note { font-size: 0.74rem; color: var(--text3); margin-left: 2px; font-style: italic; }
+
+/* ===== Footer ===== */
+.footer {
+  text-align: center; margin-top: 64px; padding-top: 24px;
+  border-top: 1px solid var(--border); color: var(--text3); font-size: 0.78rem;
+}
+
+/* ===== Side Decorations ===== */
+.side-deco { position: fixed; z-index: 0; pointer-events: none; opacity: 0.15; transition: opacity 0.3s, border-color 0.5s; }
+.side-deco.left-top { top: 8%; left: 2%; width: 180px; height: 180px; border: 2px solid var(--accent); border-radius: 50%; animation: floatA 8s ease-in-out infinite; }
+.side-deco.left-mid { top: 45%; left: 3%; width: 60px; height: 60px; border: 2px solid var(--accent2); border-radius: 12px; animation: floatB 7s ease-in-out infinite; }
+.side-deco.left-bot { bottom: 15%; left: 1.5%; width: 0; height: 0; border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 70px solid var(--accent); animation: floatC 9s ease-in-out infinite; }
+.side-deco.right-top { top: 12%; right: 2%; width: 100px; height: 100px; border: 2px solid var(--accent2); border-radius: 16px; transform: rotate(15deg); animation: floatB 8s ease-in-out infinite reverse; }
+.side-deco.right-mid { top: 50%; right: 3%; width: 140px; height: 140px; border: 2px solid var(--accent); border-radius: 50%; animation: floatA 9s ease-in-out infinite; }
+.side-deco.right-bot { bottom: 10%; right: 2%; width: 50px; height: 50px; background: var(--accent2); border-radius: 50%; animation: floatC 6s ease-in-out infinite; }
+@keyframes floatA { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(8deg); } }
+@keyframes floatB { 0%,100% { transform: rotate(45deg) translateY(0); } 50% { transform: rotate(55deg) translateY(-24px); } }
+@keyframes floatC { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.1); } }
+.dot-grid { position: fixed; z-index: 0; pointer-events: none; opacity: 0.1; }
+.dot-grid.left { top: 25%; left: 1%; width: 80px; height: 200px; background-image: radial-gradient(circle, var(--accent) 2px, transparent 2px); background-size: 16px 16px; animation: gridPulse 6s ease-in-out infinite; }
+.dot-grid.right { top: 60%; right: 1%; width: 80px; height: 200px; background-image: radial-gradient(circle, var(--accent2) 2px, transparent 2px); background-size: 16px 16px; animation: gridPulse 8s ease-in-out infinite 2s; }
+@keyframes gridPulse { 0%,100% { opacity: 0.1; } 50% { opacity: 0.18; } }
+
+/* ===== Currently badge ===== */
+.currently-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; color: #4ade80; font-weight: 500; margin-left: 8px; vertical-align: middle; }
+.currently-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse-dot 2s ease-in-out infinite; }
+@keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+
+/* ===== Scroll fade-in ===== */
+.fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== Internship timeline ===== */
+.internship-list { position: relative; padding-left: 24px; }
+.internship-list::before { content: ''; position: absolute; left: 7px; top: 28px; bottom: 28px; width: 2px; background: linear-gradient(180deg, var(--accent), var(--accent2), transparent); opacity: 0.2; border-radius: 1px; }
+.internship-list .exp-card { position: relative; }
+.internship-list .exp-card::after { content: ''; position: absolute; left: -21px; top: 32px; width: 8px; height: 8px; border-radius: 50%; background: var(--card); border: 2px solid var(--accent); transition: background 0.25s, border-color 0.25s; }
+.internship-list .exp-card:hover::after { background: var(--accent); }
+
+/* ===== Quote block ===== */
+.quote-block { border-left: 3px solid var(--accent); padding: 12px 20px; margin: 16px 0; background: var(--accent-dim); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; color: var(--text2); font-size: 0.88rem; font-style: italic; font-weight: 300; line-height: 1.8; }
+
+/* ===== Life mode specific styles ===== */
+.life-section { margin-bottom: 48px; }
+.life-section-title {
+  font-size: 0.82rem; font-weight: 600; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  margin-bottom: 20px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.life-section-title::before {
+  content: ''; width: 3px; height: 16px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+}
+.life-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 24px 28px; margin-bottom: 14px; transition: all 0.25s;
+}
+.life-card:hover { border-color: var(--border-hover); background: var(--card-hover); }
+.life-card-title { font-weight: 600; font-size: 1rem; margin-bottom: 8px; color: var(--text); }
+.life-card-desc { color: var(--text2); font-size: 0.88rem; line-height: 1.9; font-weight: 300; }
+.life-tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.life-tag {
+  background: var(--accent-dim); border: 1px solid rgba(205,133,63,0.15);
+  color: var(--accent); font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; font-weight: 400;
+}
+.travel-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 22px 26px; margin-bottom: 12px; transition: all 0.25s;
+  border-left: 3px solid var(--accent);
+}
+.travel-card:hover { border-color: var(--border-hover); background: var(--card-hover); }
+.travel-city { font-weight: 700; font-size: 1.05rem; color: var(--accent); margin-bottom: 6px; }
+.travel-story { color: var(--text2); font-size: 0.88rem; line-height: 2; font-weight: 300; }
+.life-highlight { color: var(--highlight); font-weight: 500; }
+
+/* ===== Life images ===== */
+.travel-images {
+  display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+}
+.travel-images img {
+  height: 100px; border-radius: var(--radius-sm); object-fit: cover;
+  border: 1px solid var(--border); transition: transform 0.25s, border-color 0.25s;
+  cursor: pointer;
+}
+.travel-images img:hover { transform: scale(1.04); border-color: var(--border-hover); }
+.hobby-cover {
+  height: 120px; border-radius: var(--radius-sm); object-fit: cover;
+  border: 1px solid var(--border); margin-top: 12px; transition: transform 0.25s;
+}
+.hobby-cover:hover { transform: scale(1.02); }
+
+/* ===== Lightbox ===== */
+.lightbox {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85); z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  cursor: zoom-out;
+}
+.lightbox.active { opacity: 1; pointer-events: auto; }
+.lightbox img {
+  max-width: 90vw; max-height: 85vh; border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  transform: scale(0.9); transition: transform 0.3s;
+}
+.lightbox.active img { transform: scale(1); }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .edu-grid { grid-template-columns: 1fr; }
+  .header h1 { font-size: 2rem; }
+  .exp-header { flex-direction: column; gap: 4px; }
+  .skills-list li { flex-direction: column; gap: 4px; }
+  .container { padding: 36px 16px 60px; }
+  .internship-list { padding-left: 18px; }
+  .internship-list .exp-card::after { left: -15px; }
+  .side-deco, .dot-grid { display: none; }
+  .mode-toggle { top: 12px; right: 12px; padding: 5px 12px 5px 10px; }
+  .music-player { top: 12px; right: 120px; padding: 5px 10px; }
+  .music-info { max-width: 90px; }
+}
+</style>
+</head>
+<body>
+<div class="side-deco left-top"></div>
+<div class="side-deco left-mid"></div>
+<div class="side-deco left-bot"></div>
+<div class="side-deco right-top"></div>
+<div class="side-deco right-mid"></div>
+<div class="side-deco right-bot"></div>
+<div class="dot-grid left"></div>
+<div class="dot-grid right"></div>
+
+<div class="mode-toggle" id="modeToggle" title="切换人格">
+  <span class="toggle-icon">🌙</span>
+  <span class="toggle-label" id="toggleLabel">生活</span>
+  <div class="toggle-track"><div class="toggle-thumb"></div></div>
+</div>
+
+<div class="music-player" id="musicPlayer">
+  <button class="music-btn" id="musicBtn" title="播放 / 暂停">
+    <span class="vinyl-icon">♫</span>
+  </button>
+  <div class="music-info">
+    <div class="music-title">整点薯条</div>
+    <div class="music-artist">MonkeyK × Cloud9</div>
+    <div class="music-progress" id="musicProgress">
+      <div class="music-progress-fill" id="musicProgressFill"></div>
+    </div>
+  </div>
+  <div class="sound-wave paused" id="soundWave">
+    <span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<audio id="bgMusic" preload="auto">
+  <source src="./files/MonkeyK _ Cloud9 - 整点薯条.ogg" type="audio/ogg">
+</audio>
+
+<div class="lightbox" id="lightbox"><img id="lightboxImg" src="" alt=""></div>
+
+<div class="container" id="app"></div>
+<script>
+const data = {
+  "profile": {
+    "name": "盛文皓", "age": 24, "role": "全栈工程师 / AI 应用开发者",
+    "slogan": "喜欢做有意思的事，欢迎有想法的人与我沟通，我们一起做大事。",
+    "email": "1522340603@qq.com",
+    "wechat": "sheng020128"
+  },
+  "about": "我是一个有想法的人，不太喜欢待在舒适区。对我来说，有意思的工作不是按部就班地完成任务，而是做有意思的事。从本科写前端页面，全栈开发，到研究生学习 Agent 框架，实习接触机器狗、SaaS，我发现自己最享受的状态就是：面对问题，学习新东西，解决问题，创造价值。我不觉得自己有多厉害，但我确实愿意为了解决问题去学任何需要的东西。如果你也在做一些有意思的事，或者有一个想法需要我的帮助，我会很高兴与你一同做事。",
+  "education": [
+    { "school": "北京交通大学", "college": "国家卓越工程师学院（软件工程）", "degree": "硕士研究生", "period": "2024.09 - 2027.06" },
+    { "school": "北京交通大学", "college": "软件工程", "degree": "本科", "period": "2020.09 - 2024.06" }
+  ],
+  "awards": [
+    { "title": "中国软件杯 科大讯飞 A3 赛道 面试智能体 全国三等奖" },
+    { "title": "北京交通大学软件学院 本科三等奖学金" },
+    { "title": "北京交通大学国家卓越工程师学院 硕士二等奖学金" },
+    { "title": "北京交通大学软件学院 硕士一等奖学金" }
+  ],
+  "projects": [
+    {
+      "name": "SuperView 智能面试系统", "role": "全栈负责人", "period": "2025.06 - 2025.07",
+      "tag": "中国软件杯 科大讯飞 A3 赛道 全国三等奖", "tagType": "award",
+      "description": "个人独立完成需求设计、架构搭建、前后端开发、算法集成全流程闭环，针对无领导小组讨论培训痛点，打造覆盖**单面 / 群面 / 视频面试**的智能模拟系统。",
+      "details": [
+        "自研**多 Agent 协同群面对话**，设计角色互动状态机与对话轮次控制逻辑，通过**可配置行为概率模型**，实现 Agent 间反驳 / 支持 / 补充的拟人化互动，还原真实群面话题推进流程，解决市面产品仅支持单面的核心痛点",
+        "针对长文本语音合成卡顿问题，设计**文本切片 + 多线程并行 API 调用**优化方案，整体提速 **5-7 倍**",
+        "落地多维度面试者能力测评体系，集成科大讯飞语音语调分析 API、眼神聚焦度识别轻量模型，从**语言表达、专注力、逻辑思辨、团队协作 4 个维度**实现自动化评分，同步实现简历管理、面试回放标注、能力雷达图生成等辅助功能，形成完整的面试测评闭环"
+      ],
+      "tech": ["Python", "Vue", "LLM Agent", "状态机", "多维评测"]
+    },
+    {
+      "name": "Pyress — 配置驱动的 Agent 框架", "role": "核心开发者", "period": "2026.04 - 进行中",
+      "tag": "进行中", "tagType": "inprogress",
+      "description": "Pyress 是一个 Python Agent 框架，核心理念是**「用 YAML 定义智能体，而不是写代码」**。现在的 Agent 框架太复杂，要写一堆胶水代码才能把 LLM、记忆、工具、安全防护拼起来。Pyress 让开发者只写一个 YAML 配置文件，5 分钟就能跑起来一个带记忆的智能体。框架采用**三层架构**：底层 Core 引擎（ReAct 循环、会话管理、配置解析），中层 Harness 编排器（组装所有 Provider），上层简洁 API。",
+      "details": [
+        "**三层记忆体系**：L1 持久事实记忆（Markdown 声明式事实）+ L2 程序性技能记忆（Markdown 操作步骤）+ L3 会话搜索（JSON/SQLite 历史对话检索），支持 **embedding 向量检索 + 关键词检索双路召回**",
+        "**三合一工具调用**：MCP 服务器协议 + Python @tool 装饰器注册 + REST API 适配器，覆盖 15+ Provider 组件的**可插拔体系**",
+        "**多层 Guardrails 安全防护链**：输入检查 → 工具调用检查 → 输出检查 → 调用次数限制，支持**正则规则 + LLM 评判双模式**",
+        "**Curator 反思机制**：交互后自动反思提取经验，更新 L1/L2 记忆，实现 **Agent 自我进化**",
+        "**三层 SDK 设计**：高层 API（配置用户零代码）→ 中层 Harness（Python 开发者自定义）→ 底层 Core（框架贡献者扩展），8 个核心模块覆盖完整 Agent 生命周期"
+      ],
+      "tech": ["Python 异步", "YAML + Markdown", "MCP 协议", "ReAct Loop", "可插拔 Provider"]
+    },
+    {
+      "name": "智慧思政", "role": "前端开发", "period": "2021.12 - 2023.11",
+      "tag": "3 所高校落地使用", "tagType": "award",
+      "link": { "text": "平台入口", "url": "https://dxxyzhxg.bjtu.edu.cn/" },
+      "description": "面向高校思政信息管理平台，目前在北京林业大学、北京工业大学、北京交通大学 3 所高校落地使用。主要负责网站维护、风格迁移，根据设计图实现前端页面，完成**Vuex 状态管理与组件通信**等基础前端工作。",
+      "details": [],
+      "tech": ["Vue2", "Element UI", "Vuex"]
+    }
+  ],
+  "internships": [
+    {
+      "company": "北京久其软件股份有限公司", "role": "全栈实习生", "period": "2023.08 - 2023.11",
+      "description": "主导离线地图组件技术方案设计，完成技术调研、可行性分析及组件选型。前端基于**Vue2 + ElementUI + OpenLayer6 + 离线地图瓦片**，实现离线地图下铁路数据可视化展示与交互；后端基于自研 Web 框架完成数据配置、接口开发与功能修改。",
+      "details": [],
+      "tech": ["Vue2", "Element UI", "OpenLayer6", "离线瓦片", "自研 Web 框架"]
+    },
+    {
+      "company": "北京智谱华章科技股份有限公司", "role": "AI 训练实习生", "period": "2023.12 - 2024.03",
+      "description": "数据标注与清洗，主要负责数据类，界面分析类，文本类，图片标识选择类，翻译类，政策类知识回答",
+      "details": [],
+      "tech": ["大模型数据标注"]
+    },
+    {
+      "company": "北京深维信科技有限公司", "role": "服务端实习生", "period": "2024.10 - 2025.02",
+      "description": "负责公司核心 SaaS 系统服务端开发，承接业务需求落地、接口扩展与功能迭代。参与公司 Agent RAG 相关应用开发，负责业务流程迁移、三方接口对接、企业数据对齐与联调测试，配合团队完成交易指令模块的 Agent 流程重构。",
+      "details": [
+        "负责线上系统性能与资源优化专项，针对 ES 集群资源占用过高、冷数据索引拖累热查询性能的问题，制定**冷数据索引分时段生命周期管理策略**，对低频用户的非活跃索引分片进行定时关闭与按需唤醒，降低了集群内存与 CPU 占用",
+        "完成公司开放接口的性能优化、脚本 SQL 性能调优与定时任务优化，解决线上接口超时、任务重复执行等问题，提升了系统的健壮性与可用性"
+      ],
+      "tech": ["Python", "FastAPI", "ES", "Redis", "Agent RAG"]
+    },
+    {
+      "company": "中铁第四勘察设计院", "role": "算法实习生", "period": "2025.09 - 2026.04",
+      "description": "基于宇树 Go2 EDU 版四足机器人进行二次开发，完成 2D 场景下**SLAM 建图、定位、自主导航全链路功能落地**，适配工业巡检场景的功能需求，完成相关框架的封装与适配。建图定位使用 **FastLIO 及其二改版本**，导航基于 **Nav2**，3D 到 2D 转换和 CmdToVel 均为手写转换器。",
+      "details": [
+        "独立设计并开发工业巡检 Web 管理系统，基于 **Python event 事件异步驱动框架**，实现自定义巡检路线配置、巡检任务启停 / 暂停 / 恢复、实时直播、语音控制等全功能闭环，完整覆盖工业巡检的核心业务流程",
+        "解决团队核心技术卡点，通过**多进程资源隔离 + 管道跨进程通信**的架构设计，拆分 ROS 导航节点与 SDK 控制进程，解决 ROS2 与宇树 Python SDK 对 CycloneDDS 的初始化冲突问题，提升了巡检系统的运行稳定性"
+      ],
+      "tech": ["Python", "ROS2", "FastLIO", "Nav2", "CycloneDDS", "Go2 SDK"]
+    },
+    {
+      "company": "北京快手科技有限公司", "role": "AI 前沿探索实习生", "period": "2026.04 - 至今",
+      "description": "参与设计 AI Agent 的**Skill 系统**，以及探索**OpenClaw 的深水区边界**。不是调现成的框架，而是在回答那些还没有标准答案的问题：Agent 的能力能走多远？什么该做，什么不该做？怎么做才能既强大又安全？",
+      "details": [
+        "**Skill 系统**：定义 AI Agent 的能力边界，设计技能注册、发现、编排机制",
+        "**OpenClaw 深水区**：深入 Agent 安全与能力的边界问题，前沿场景验证与探索"
+      ],
+      "tech": ["Agent Skill", "安全边界", "AI 前沿探索"]
+    }
+  ],
+  "skills": [
+    { "category": "编程语言", "items": ["Python", "Java", "Go", "C++", "JavaScript / TypeScript"] },
+    { "category": "前端", "items": ["Vue2 / Vue3", "Element UI", "OpenLayers 地图", "HTML / CSS"] },
+    { "category": "后端", "items": ["SpringBoot / SpringCloud", "FastAPI / Flask", "Gin", "Python asyncio 异步生态"] },
+    { "category": "数据库", "items": ["MySQL", "SQLite", "MongoDB", "Elasticsearch", "Redis"] },
+    { "category": "常用中间件", "items": ["RocketMQ / Kafka", "Dubbo / gRPC / Feign", "Consul / ETCD / Nacos", "Caffeine"] },
+    { "category": "线上调试经验", "items": ["grep + awk 日志排查", "go pprof 热力图性能分析", "Trace 链路追踪", "线上问题定位基本能力"] },
+    { "category": "Linux", "items": ["systemctl 服务管理", "top / htop 资源监控优化"] },
+    { "category": "开发流程", "items": ["Git 版本控制", "GitLab CI", "Docker 容器化"] },
+    { "category": "AI 使用经验", "items": ["LLM Agent 框架设计", "MCP 工具协议", "RAG 应用开发", "Prompt Engineering", "OpenClaw使用经验", "AI 编程实践与理解"] }
+  ]
+};
+
+/* ===== Life data ===== */
+const lifeData = {
+  "profile": {
+    "name": "盛文皓", "age": 24,
+    "slogan": "生活不止工作，还有远方和音乐。",
+  },
+  "hobbies": [
+    {
+      "title": "运动",
+      "desc": "比较会的是排球，爱跑步，会滑旱冰，会下围棋（业余四段）",
+      "tags": ["排球", "跑步", "旱冰", "围棋（业余四段）"]
+    },
+    {
+      "title": "读书",
+      "desc": "最喜欢的书有东野圭吾的《白夜行》《解忧杂货店》，乙一的《Zoo》，菡萏作家的《养一朵雪花》",
+      "tags": ["白夜行", "解忧杂货店", "Zoo", "养一朵雪花"]
+    },
+    {
+      "title": "听歌",
+      "desc": "QQ音乐 SVIP6，风格多种多样，喜欢听摇滚、说唱、节奏布鲁斯、电子和流行乐。最爱的国内歌手是<span class='life-highlight'>邓紫棋</span>，最喜欢的外国歌手是<span class='life-highlight'>IU</span>，最喜欢的乐队是<span class='life-highlight'>BISH</span> 和 <span class='life-highlight'>ONE OK ROCK</span>，最喜欢的演唱会是 ONE OK ROCK 的横滨演唱会，梦想有一天能去线下参加 ONE OK ROCK 和 IU 的演唱会。最近在听的歌是《整点薯条》",
+      "tags": ["摇滚", "说唱", "R&B", "电子", "流行", "SVIP6"]
+    },
+    {
+      "title": "追剧",
+      "desc": "偶尔看电视剧，看过最棒的电视剧是《苦尽柑来遇见你》",
+      "tags": ["苦尽柑来遇见你"]
+    }
+  ],
+  "games": {
+    "pc": ["英雄联盟", "Apex", "三角洲行动", "CSGO", "QQ飞车", "NBA2K Online", "艾尔登法环", "博德之门", "恶意不息", "黑神话悟空", "DND", "战地", "中土世界：战争之影", "奥日", "街霸", "幻兽帕鲁", "泰拉瑞亚", "饥荒", "REPO"],
+    "mobile": ["王者荣耀", "和平精英", "第五人格", "光遇"]
+  },
+  "travels": [
+    {
+      "city": "天津",
+      "story": "第一次去的地方是天津，从天津站到滨海新区，再到凌晨 2 点在新港八号路上骑车，昏暗的风光，即将骑出运营区和很多的大卡车，第二天吃的煎饼果子和需要预约的粤菜茶点自助"
+    },
+    {
+      "city": "武汉",
+      "story": "最喜欢武汉汉江路的小吃街和满大街的 cosplay"
+    },
+    {
+      "city": "宣恩",
+      "story": "从恩施转坐 25 元大巴到宣恩，去体会仙山贡水，浪漫宣恩，偶然看过一次路边演出，最喜欢当地方言的要（二声）不（二声）要（二声）得（dei 四声）"
+    },
+    {
+      "city": "南昌",
+      "story": "吃的是往死了好喝的蘑菇鲜肉瓦罐汤，南昌拌粉，洪都大拇指和水席，坐了南昌之星，上面漏风，一圈半小时"
+    },
+    {
+      "city": "长沙",
+      "story": "吃的黑色经典臭豆腐，去的五一广场，喝的茶颜悦色，逛的橘子洲头（纯走路走了 3 小时），路过知名的长沙玉兰路"
+    },
+    {
+      "city": "秦皇岛 & 北戴河",
+      "story": "踩过柔软的沙子，骑的美团的助力单车（有推背感，我跟你讲，爽飞了），北戴河是参加的看理想阿那亚读书日，本意去看陈嘉映老师，但实在赶不上，参加的《废墟是一座桥，我们为何要走进他乡》，实名点赞柏林和周轶君老师，下次还来"
+    },
+    {
+      "city": "张家界",
+      "story": "计划中……"
+    }
+  ]
+};
+
+function hl(text) {
+  return text.replace(/\*\*(.+?)\*\*/g, '<span class="hl">$1</span>');
+}
+
+let currentMode = 'work';
+const app = document.getElementById('app');
+
+function renderWork() {
+  let html = '';
+  html += `
+  <div class="header fade-in">
+    <h1>${data.profile.name}</h1>
+    <div class="role">${data.profile.age}岁 · ${data.profile.role}</div>
+    <div class="slogan">"${data.profile.slogan}"</div>
+    <div class="contact">${data.profile.email} · 微信 ${data.profile.wechat} · 欢迎联系</div>
+  </div>`;
+  html += `
+  <div class="section fade-in">
+    <div class="section-title">关于我</div>
+    <div class="about-text">${data.about}</div>
+    <div class="quote-block">"遇到问题，解决问题"</div>
+  </div>`;
+  html += `
+  <div class="section fade-in">
+    <div class="section-title">教育背景</div>
+    <div class="edu-grid">
+      ${data.education.map(e => `
+        <div class="edu-card">
+          <div class="school">${e.school}</div>
+          <div class="college">${e.college}</div>
+          <div class="degree">${e.degree}</div>
+          <div class="period">${e.period}</div>
+        </div>`).join('')}
+    </div>
+    <div class="awards-list">${data.awards.map(a => `<span class="award-tag">${a.title}</span>`).join('')}</div>
+  </div>`;
+  html += `
+  <div class="section fade-in">
+    <div class="section-title">项目经历</div>
+    ${data.projects.map(p => `
+      <div class="exp-card fade-in">
+        <div class="exp-header">
+          <div><div class="exp-company">${p.name}${p.tagType === 'inprogress' ? '<span class="currently-badge">进行中</span>' : ''}</div><div class="exp-role">${p.role}</div></div>
+          <div class="exp-period">${p.period}</div>
+        </div>
+        ${p.tagType === 'award' ? `<span class="project-tag ${p.tagType}">${p.tag}</span>` : ''}
+        <div class="exp-desc">${hl(p.description)}${p.link ? ` <a href='${p.link.url}' target='_blank'>${p.link.text}</a>` : ''}</div>
+        <ul class="exp-details">${p.details.map(d => `<li>${hl(d)}</li>`).join('')}</ul>
+        <div class="tech-row">${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}</div>
+      </div>`).join('')}
+  </div>`;
+  html += `
+  <div class="section fade-in">
+    <div class="section-title">实习经历</div>
+    <div class="internship-list">
+    ${data.internships.map(i => `
+      <div class="exp-card fade-in">
+        <div class="exp-header">
+          <div><div class="exp-company">${i.company}${i.period.includes('至今') ? '<span class="currently-badge">当前</span>' : ''}</div><div class="exp-role">${i.role}</div></div>
+          <div class="exp-period">${i.period}</div>
+        </div>
+        <div class="exp-desc">${hl(i.link ? i.description.replace(i.link.text, `<a href='${i.link.url}' target='_blank'>${i.link.text}</a>`) : i.description)}</div>
+        ${i.details.length > 0 ? `<ul class="exp-details">${i.details.map(d => `<li>${hl(d)}</li>`).join('')}</ul>` : ''}
+        <div class="tech-row">${i.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+  html += `
+  <div class="section fade-in">
+    <div class="section-title">技术栈</div>
+    <ul class="skills-list">
+      ${data.skills.map(s => `
+        <li class="fade-in">
+          <span class="skill-cat">${s.category}</span>
+          <span class="skill-items-inline">${s.items.join('、')}${s.note ? `<span class="skill-note">（${s.note}）</span>` : ''}</span>
+        </li>`).join('')}
+    </ul>
+  </div>`;
+  html += `<div class="footer fade-in">Made with purpose, not perfection.</div>`;
+  return html;
+}
+
+function renderLife() {
+  const d = lifeData;
+  let html = '';
+  html += `
+  <div class="header fade-in">
+    <h1>${d.profile.name}</h1>
+    <div class="role">${d.profile.age}岁 · 生活家</div>
+    <div class="slogan">"${d.profile.slogan}"</div>
+  </div>`;
+
+  // Hobbies
+  html += `
+  <div class="life-section fade-in">
+    <div class="life-section-title">爱好</div>
+    ${d.hobbies.map(h => `
+      <div class="life-card fade-in">
+        <div class="life-card-title">${h.title}</div>
+        <div class="life-card-desc">${h.desc}</div>
+        <div class="life-tag-row">${h.tags.map(t => `<span class="life-tag">${t}</span>`).join('')}</div>
+        ${h.title === '追剧' ? '<img class="hobby-cover" src="./pics/苦尽柑来遇见你.jpg" alt="苦尽柑来遇见你" loading="lazy">' : ''}
+      </div>`).join('')}
+  </div>`;
+
+  // Games
+  html += `
+  <div class="life-section fade-in">
+    <div class="life-section-title">游戏</div>
+    <div class="life-card fade-in">
+      <div class="life-card-title">PC</div>
+      <div class="life-tag-row">${d.games.pc.map(g => `<span class="life-tag">${g}</span>`).join('')}</div>
+    </div>
+    <div class="life-card fade-in">
+      <div class="life-card-title">手游</div>
+      <div class="life-tag-row">${d.games.mobile.map(g => `<span class="life-tag">${g}</span>`).join('')}</div>
+    </div>
+  </div>`;
+
+  // Travel
+  const travelImages = {
+    '天津': [],
+    '武汉': ['./pics/武汉.jpg'],
+    '宣恩': ['./pics/宣恩.jpg', './pics/宣恩2.jpg', './pics/宣恩3.jpg', './pics/宣恩4.jpg'],
+    '南昌': ['./pics/南昌.jpg', './pics/南昌2.jpg'],
+    '长沙': ['./pics/长沙.jpg'],
+    '秦皇岛 & 北戴河': ['./pics/秦皇岛.jpg', './pics/爱理想读书日.jpg'],
+    '张家界': []
+  };
+  html += `
+  <div class="life-section fade-in">
+    <div class="life-section-title">旅行 · 半夜 4 点的火车</div>
+    ${d.travels.map(t => `
+      <div class="travel-card fade-in">
+        <div class="travel-city">${t.city}</div>
+        <div class="travel-story">${t.story}</div>
+        ${travelImages[t.city] && travelImages[t.city].length > 0 ? `<div class="travel-images">${travelImages[t.city].map(src => `<img src="${src}" alt="${t.city}" loading="lazy">`).join('')}</div>` : ''}
+      </div>`).join('')}
+  </div>`;
+
+  html += `<div class="footer fade-in">生活万岁。</div>`;
+  return html;
+}
+
+function switchMode() {
+  const content = document.querySelector('.page-content') || app;
+  content.classList.add('switching');
+  setTimeout(() => {
+    currentMode = currentMode === 'work' ? 'life' : 'work';
+    document.body.classList.toggle('life-mode', currentMode === 'life');
+    const toggle = document.getElementById('modeToggle');
+    const label = document.getElementById('toggleLabel');
+    const icon = toggle.querySelector('.toggle-icon');
+    if (currentMode === 'life') {
+      label.textContent = '工作';
+      icon.textContent = '☀️';
+    } else {
+      label.textContent = '生活';
+      icon.textContent = '🌙';
+    }
+    app.innerHTML = currentMode === 'work' ? renderWork() : renderLife();
+    // Re-observe fade-in elements
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    content.classList.remove('switching');
+    updateMusicVisibility();
+  }, 350);
+}
+
+// Initial render
+app.innerHTML = renderWork();
+
+// Toggle handler
+document.getElementById('modeToggle').addEventListener('click', switchMode);
+
+// Scroll fade-in observer
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+/* ===== Music Player ===== */
+const bgMusic = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+const musicPlayer = document.getElementById('musicPlayer');
+const soundWave = document.getElementById('soundWave');
+const progressFill = document.getElementById('musicProgressFill');
+const progressBar = document.getElementById('musicProgress');
+let isPlaying = false;
+
+musicBtn.addEventListener('click', () => {
+  if (isPlaying) {
+    bgMusic.pause();
+    musicBtn.classList.remove('playing');
+    soundWave.classList.add('paused');
+  } else {
+    bgMusic.play().catch(() => {});
+    musicBtn.classList.add('playing');
+    soundWave.classList.remove('paused');
+  }
+  isPlaying = !isPlaying;
+});
+
+bgMusic.addEventListener('timeupdate', () => {
+  if (bgMusic.duration) {
+    const pct = (bgMusic.currentTime / bgMusic.duration) * 100;
+    progressFill.style.width = pct + '%';
+  }
+});
+
+bgMusic.addEventListener('ended', () => {
+  isPlaying = false;
+  musicBtn.classList.remove('playing');
+  soundWave.classList.add('paused');
+  progressFill.style.width = '0%';
+});
+
+progressBar.addEventListener('click', (e) => {
+  if (bgMusic.duration) {
+    const rect = progressBar.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    bgMusic.currentTime = pct * bgMusic.duration;
+  }
+});
+
+// Show/hide player based on mode
+function updateMusicVisibility() {
+  if (currentMode === 'life') {
+    musicPlayer.classList.add('visible');
+  } else {
+    musicPlayer.classList.remove('visible');
+    if (isPlaying) {
+      bgMusic.pause();
+      isPlaying = false;
+      musicBtn.classList.remove('playing');
+      soundWave.classList.add('paused');
+    }
+  }
+}
+
+/* ===== Lightbox ===== */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+
+document.addEventListener('click', (e) => {
+  if (e.target.matches('.travel-images img, .hobby-cover')) {
+    lightboxImg.src = e.target.src;
+    lightbox.classList.add('active');
+  }
+  if (e.target === lightbox) {
+    lightbox.classList.remove('active');
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') lightbox.classList.remove('active');
+});
+
+</script>
+</body>
+</html>
